@@ -14,7 +14,7 @@
 // Execute `rustlings hint hashmaps2` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
+
 
 use std::collections::HashMap;
 
@@ -37,6 +37,14 @@ fn fruit_basket(basket: &mut HashMap<Fruit, u32>) {
     ];
 
     for fruit in fruit_kinds {
+        basket.entry(fruit).or_insert(1);
+        // If the fruit is not already present, insert it with a count of 1.
+        // If it is already present, do nothing.
+        // This ensures that we do not modify the counts of the fruits that
+        // are already in the basket.
+        // For example, if Apple is already present with a count of 4, it will
+        // remain 4. If Banana is not present, it will be added with a count of 1.
+        // This way, we ensure that we have at least one of each kind
         // TODO: Insert new fruits if they are not already present in the
         // basket. Note that you are not allowed to put any type of fruit that's
         // already present!

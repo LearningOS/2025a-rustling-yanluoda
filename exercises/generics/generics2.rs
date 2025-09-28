@@ -6,14 +6,15 @@
 // Execute `rustlings hint generics2` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
 
-struct Wrapper {
-    value: u32,
+
+#[derive(Debug, PartialEq)] // 添加派生宏以支持比较和调试输出
+struct Wrapper<T> {         // 使用泛型类型参数 T
+    value: T,
 }
 
-impl Wrapper {
-    pub fn new(value: u32) -> Self {
+impl<T> Wrapper<T> {        // 为泛型类型实现方法
+    pub fn new(value: T) -> Self {
         Wrapper { value }
     }
 }

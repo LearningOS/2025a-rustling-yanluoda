@@ -22,17 +22,19 @@
 // Execute `rustlings hint tests5` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
+
 
 /// # Safety
 ///
 /// The `address` must contain a mutable reference to a valid `u32` value.
 unsafe fn modify_by_address(address: usize) {
-    // TODO: Fill your safety notice of the code block below to match your
-    // code's behavior and the contract of this function. You may use the
-    // comment of the test below as your format reference.
+    // SAFETY: 
+    // 1. 调用者必须保证 `address` 是有效且对齐的可写内存地址（即指向合法的 `u32` 类型数据）。
+    // 2. 调用者必须保证此地址在函数执行期间独占访问（无其他引用或指针同时访问同一内存位置）。
+    // 3. 调用者必须保证目标内存的生命周期覆盖此次修改操作。
     unsafe {
-        todo!("Your code goes here")
+        let ptr = address as *mut u32; // 转换地址为裸指针
+        *ptr = 0xAABBCCDD;            // 解引用并修改内存值
     }
 }
 
@@ -43,9 +45,11 @@ mod tests {
     #[test]
     fn test_success() {
         let mut t: u32 = 0x12345678;
-        // SAFETY: The address is guaranteed to be valid and contains
-        // a unique reference to a `u32` local variable.
+        // SAFETY: 
+        // 1. `&mut t` 生成有效的可变引用，其地址非空且对齐。
+        // 2. `t` 是局部变量，生命周期覆盖整个 unsafe 块。
+        // 3. 无其他引用同时访问 `t`（满足独占访问）。
         unsafe { modify_by_address(&mut t as *mut u32 as usize) };
-        assert!(t == 0xAABBCCDD);
+        assert_eq!(t, 0xAABBCCDD); // 验证内存修改成功
     }
 }

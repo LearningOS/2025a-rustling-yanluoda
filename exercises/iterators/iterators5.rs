@@ -11,7 +11,7 @@
 // Execute `rustlings hint iterators5` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
+// iterators5.rs
 
 use std::collections::HashMap;
 
@@ -33,9 +33,10 @@ fn count_for(map: &HashMap<String, Progress>, value: Progress) -> usize {
 }
 
 fn count_iterator(map: &HashMap<String, Progress>, value: Progress) -> usize {
-    // map is a hashmap with String keys and Progress values.
-    // map = { "variables1": Complete, "from_str": None, ... }
-    todo!();
+    // 使用迭代器方法统计特定进度值的数量
+    map.values()                    // 获取值的迭代器
+        .filter(|&progress| *progress == value)  // 过滤出等于目标值的项
+        .count()                    // 计数
 }
 
 fn count_collection_for(collection: &[HashMap<String, Progress>], value: Progress) -> usize {
@@ -51,10 +52,10 @@ fn count_collection_for(collection: &[HashMap<String, Progress>], value: Progres
 }
 
 fn count_collection_iterator(collection: &[HashMap<String, Progress>], value: Progress) -> usize {
-    // collection is a slice of hashmaps.
-    // collection = [{ "variables1": Complete, "from_str": None, ... },
-    //     { "variables2": Complete, ... }, ... ]
-    todo!();
+    // 对集合中的每个映射应用相同的逻辑，然后求和
+    collection.iter()               // 获取集合的迭代器
+        .map(|map| count_iterator(map, value))  // 对每个映射统计数量
+        .sum()                      // 求和
 }
 
 #[cfg(test)]

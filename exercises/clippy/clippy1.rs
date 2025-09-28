@@ -9,14 +9,11 @@
 // Execute `rustlings hint clippy1` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
-
-use std::f32;
+use std::f32::consts::PI; // 导入标准库的 π 常量
 
 fn main() {
-    let pi = 3.14f32;
+    let pi = PI;           // 使用精确的 π 常量
     let radius = 5.00f32;
-
     let area = pi * f32::powi(radius, 2);
 
     println!(

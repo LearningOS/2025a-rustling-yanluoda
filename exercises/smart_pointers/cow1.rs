@@ -12,7 +12,7 @@
 //
 // Execute `rustlings hint cow1` or use the `hint` watch subcommand for a hint.
 
-// I AM NOT DONE
+// cow1.rs
 
 use std::borrow::Cow;
 
@@ -48,7 +48,8 @@ mod tests {
         let slice = [0, 1, 2];
         let mut input = Cow::from(&slice[..]);
         match abs_all(&mut input) {
-            // TODO
+            Cow::Borrowed(_) => Ok(()),  // 修正：期望 Borrowed，因为没有修改
+            _ => Err("Expected borrowed value"),
         }
     }
 
@@ -60,7 +61,8 @@ mod tests {
         let slice = vec![0, 1, 2];
         let mut input = Cow::from(slice);
         match abs_all(&mut input) {
-            // TODO
+            Cow::Owned(_) => Ok(()),  // 修正：期望 Owned，因为一开始就是拥有的
+            _ => Err("Expected owned value"),
         }
     }
 
@@ -72,7 +74,8 @@ mod tests {
         let slice = vec![-1, 0, 1];
         let mut input = Cow::from(slice);
         match abs_all(&mut input) {
-            // TODO
+            Cow::Owned(_) => Ok(()),  // 修正：期望 Owned，因为发生了修改
+            _ => Err("Expected owned value"),
         }
     }
 }

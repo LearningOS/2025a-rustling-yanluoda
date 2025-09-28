@@ -9,17 +9,23 @@
 // Execute `rustlings hint iterators1` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
+
 
 fn main() {
     let my_fav_fruits = vec!["banana", "custard apple", "avocado", "peach", "raspberry"];
 
-    let mut my_iterable_fav_fruits = ???;   // TODO: Step 1
+    // Step 1: 创建可变迭代器
+    let mut my_iterable_fav_fruits = my_fav_fruits.iter(); // 使用 iter() 创建迭代器
 
+    // Step 2: 验证第二个元素
     assert_eq!(my_iterable_fav_fruits.next(), Some(&"banana"));
-    assert_eq!(my_iterable_fav_fruits.next(), ???);     // TODO: Step 2
+    assert_eq!(my_iterable_fav_fruits.next(), Some(&"custard apple")); // 第二个元素
+
+    // Step 3: 验证第四个元素
     assert_eq!(my_iterable_fav_fruits.next(), Some(&"avocado"));
-    assert_eq!(my_iterable_fav_fruits.next(), ???);     // TODO: Step 3
+    assert_eq!(my_iterable_fav_fruits.next(), Some(&"peach")); // 第四个元素
+
+    // Step 4: 验证迭代结束
     assert_eq!(my_iterable_fav_fruits.next(), Some(&"raspberry"));
-    assert_eq!(my_iterable_fav_fruits.next(), ???);     // TODO: Step 4
+    assert_eq!(my_iterable_fav_fruits.next(), None); // 迭代结束
 }

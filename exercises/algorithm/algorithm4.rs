@@ -3,10 +3,8 @@
 	This problem requires you to implement a basic interface for a binary tree
 */
 
-//I AM NOT DONE
 use std::cmp::Ordering;
 use std::fmt::Debug;
-
 
 #[derive(Debug)]
 struct TreeNode<T>
@@ -43,20 +41,24 @@ impl<T> BinarySearchTree<T>
 where
     T: Ord,
 {
-
     fn new() -> Self {
         BinarySearchTree { root: None }
     }
 
-    // Insert a value into the BST
+    // 插入值到BST
     fn insert(&mut self, value: T) {
-        //TODO
+        match self.root {
+            Some(ref mut node) => node.insert(value),
+            None => self.root = Some(Box::new(TreeNode::new(value))),
+        }
     }
 
-    // Search for a value in the BST
+    // 在BST中搜索值
     fn search(&self, value: T) -> bool {
-        //TODO
-        true
+        match self.root {
+            Some(ref node) => node.search(value),
+            None => false,
+        }
     }
 }
 
@@ -64,12 +66,37 @@ impl<T> TreeNode<T>
 where
     T: Ord,
 {
-    // Insert a node into the tree
+    // 递归插入节点
     fn insert(&mut self, value: T) {
-        //TODO
+        match value.cmp(&self.value) {
+            Ordering::Less => {
+                if let Some(ref mut left) = self.left {
+                    left.insert(value);
+                } else {
+                    self.left = Some(Box::new(TreeNode::new(value)));
+                }
+            }
+            Ordering::Greater => {
+                if let Some(ref mut right) = self.right {
+                    right.insert(value);
+                } else {
+                    self.right = Some(Box::new(TreeNode::new(value)));
+                }
+            }
+            // 相等时不插入（BST通常不允许重复值）
+            Ordering::Equal => {}
+        }
+    }
+
+    // 递归搜索值
+    fn search(&self, value: T) -> bool {
+        match value.cmp(&self.value) {
+            Ordering::Equal => true,
+            Ordering::Less => self.left.as_ref().map_or(false, |left| left.search(value)),
+            Ordering::Greater => self.right.as_ref().map_or(false, |right| right.search(value)),
+        }
     }
 }
-
 
 #[cfg(test)]
 mod tests {
@@ -78,49 +105,40 @@ mod tests {
     #[test]
     fn test_insert_and_search() {
         let mut bst = BinarySearchTree::new();
-
         
-        assert_eq!(bst.search(1), false);
-
+        assert!(!bst.search(1));
         
         bst.insert(5);
         bst.insert(3);
         bst.insert(7);
         bst.insert(2);
         bst.insert(4);
-
         
-        assert_eq!(bst.search(5), true);
-        assert_eq!(bst.search(3), true);
-        assert_eq!(bst.search(7), true);
-        assert_eq!(bst.search(2), true);
-        assert_eq!(bst.search(4), true);
-
+        assert!(bst.search(5));
+        assert!(bst.search(3));
+        assert!(bst.search(7));
+        assert!(bst.search(2));
+        assert!(bst.search(4));
         
-        assert_eq!(bst.search(1), false);
-        assert_eq!(bst.search(6), false);
+        assert!(!bst.search(1));
+        assert!(!bst.search(6));
     }
 
     #[test]
     fn test_insert_duplicate() {
         let mut bst = BinarySearchTree::new();
-
         
         bst.insert(1);
-        bst.insert(1);
-
+        bst.insert(1); // 重复值不插入
         
-        assert_eq!(bst.search(1), true);
-
+        assert!(bst.search(1));
         
         match bst.root {
             Some(ref node) => {
                 assert!(node.left.is_none());
                 assert!(node.right.is_none());
-            },
+            }
             None => panic!("Root should not be None after insertion"),
         }
     }
-}    
-
-
+}
